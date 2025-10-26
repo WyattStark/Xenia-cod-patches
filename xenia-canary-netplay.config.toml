@@ -1,6 +1,6 @@
 [APU]
 apu = "any"                                       	# Audio system. Use: [any, nop, sdl, xaudio2]
-apu_max_queued_frames = 1                         	# Allows changing max buffered audio frames to reduce audio delay. Lowering this value might cause performance issues. Value range: [4-64]
+apu_max_queued_frames = 8                         	# Allows changing max buffered audio frames to reduce audio delay. Lowering this value might cause performance issues. Value range: [4-64]
 enable_xmp = true                                 	# Enables Music Player playback.
 ffmpeg_verbose = false                            	# Verbose FFmpeg output (debug and above)
 mute = false                                      	# Mutes all audio output.
@@ -68,7 +68,7 @@ defaults_date = 2024083120                        	# Do not modify - internal ve
 
 
 [Content]
-license_mask = 1                                  	# Set license mask for activated content.
+license_mask = 0                                  	# Set license mask for activated content.
                                                   	#  0 = No licenses enabled.
                                                   	#  1 = First license enabled. Generally the full version license in
                                                   	#      Xbox Live Arcade titles.
@@ -273,7 +273,6 @@ vsync = true                                      	# Enable VSYNC.
 allow_game_relative_writes = false                	# Not useful to non-developers. Allows code to write to paths relative to game://. Used for generating test data to compare with original hardware. 
 allow_plugins = false                             	# Allows loading of plugins/trainers from plugins\title_id\plugin.xex. Plugin are homebrew xex modules which can be used for making mods. This feature is experimental.
 apply_patches = true                              	# Enables custom patching functionality
-auto_check_updates = true                         	# Automatically check for updates on startup and notify if any are available.
 controller_hotkeys = false                        	# Hotkeys for Xbox and PS controllers.
 debug = false                                     	# Allow debugging and retain debug information.
 discord = true                                    	# Enable Discord rich presence
@@ -333,7 +332,7 @@ Allow_nui_initialization = false                  	# Enable NUI initialization
 
 allow_incompatible_title_update = true            	# Allow title updates with mismatched signatures to be applied.
 apply_title_update = true                         	# Apply title updates.
-cl = ""                                           	# Specify additional command-line provided to guest.
+cl = "+devmap zm_theater;+set r_drawSceneModels 0;+set r_drawSkinnedmodels 0;+set r_drawSceneEnts 0;+set r_vsync 0;+set com_maxfps 125"	# Specify additional command-line provided to guest.
 default_achievements_backend = "GPD"              	# Defines which achievements backend should be used as an default. Possible options: GPD.
 ignore_thread_affinities = true                   	# Ignores game-specified thread affinities.
 ignore_thread_priorities = true                   	# Ignores game-specified thread priorities.
@@ -355,7 +354,7 @@ friends_xuids = ""                                	# Comma delimited list of XUI
 log_mask_ips = true                               	# Do not include P2P IPs inside the log
 logging = false                                   	# Log Network Activity & Stats
 network_guid = "{3C41B817-A2FB-4BAE-AFFA-91698857BF21}"	# Network Interface GUID
-network_mode = 1                                  	# Network mode types: 0 - Offline, 1 - Systemlink, 2 - Xbox Live.
+network_mode = 2                                  	# Network mode types: 0 - Offline, 1 - Systemlink, 2 - Xbox Live.
 stub_xlivebase = false                            	# Return success for all unimplemented XLiveBase calls.
 upnp = false                                      	# Automatically port forward using UPnP
 upnp_root = ""                                    	# UPnP Root Device
@@ -367,8 +366,8 @@ xstorage_user_data_backend = false                	# Store user data on backend 
 [Logging]
 enable_console = false                            	# Open a console window with the main window
 flush_log = true                                  	# Flush log file after each log line batch.
-log_file = "xenia.log"                            	# Logs are written to the given file
-log_level = 3                                     	# Maximum level to be logged. (0=error, 1=warning, 2=info, 3=debug)
+log_file = ""                                     	# Logs are written to the given file
+log_level = 2                                     	# Maximum level to be logged. (0=error, 1=warning, 2=info, 3=debug)
 log_mask = 0                                      	# Disables specific categorizes for more granular debug logging. Kernel = 1, Apu = 2, Cpu = 4.
 log_string_format_kernel_calls = false            	# Log kernel calls with the kHighFrequency tag.
 log_to_debugprint = false                         	# Dump the log to DebugPrint.
@@ -384,8 +383,8 @@ writable_executable_memory = true                 	# Allow mapping memory with b
 
 
 [Profiles]
-logged_profile_slot_0_xuid = "E03000007A2FD809"   	# XUID of the profile to load on boot in slot 0
-logged_profile_slot_1_xuid = ""                   	# XUID of the profile to load on boot in slot 1
+logged_profile_slot_0_xuid = "E03000001E1CFDBE"   	# XUID of the profile to load on boot in slot 0
+logged_profile_slot_1_xuid = "0000000000000000"   	# XUID of the profile to load on boot in slot 1
 logged_profile_slot_2_xuid = ""                   	# XUID of the profile to load on boot in slot 2
 logged_profile_slot_3_xuid = ""                   	# XUID of the profile to load on boot in slot 3
 
@@ -425,7 +424,6 @@ avpack = 8                                        	# Video modes
                                                   	#  7 = TV PAL-60
                                                   	#  8 = HDMI (default)
 
-enable_3d_mode = false                            	# Enables usage of stereoscopic mode in titles.
 interlaced = false                                	# Toggles interlaced mode.
 internal_display_resolution = 8                   	# Allow games that support different resolutions to render in a specific resolution.
                                                   	# This is not guaranteed to work with all games or improve performance.
@@ -464,10 +462,12 @@ widescreen = true                                 	# Toggles between 16:9 and 4:
 vulkan_allow_present_mode_fifo_relaxed = true     	# When available, allow the relaxed first-in-first-out presentation mode (3rd priority), which causes waiting for host display vertical sync, but may present with tearing if frames don't meet the host display refresh rate.
 vulkan_allow_present_mode_immediate = true        	# When available, allow the immediate presentation mode (1st priority), offering the lowest latency with the possibility of tearing in certain cases, and, depending on the configuration, variable refresh rate.
 vulkan_allow_present_mode_mailbox = true          	# When available, allow the mailbox presentation mode (2nd priority), offering low latency without the possibility of tearing.
-vulkan_device = -1                                	# Index of the preferred Vulkan physical device, or -1 to use any compatible device.
-vulkan_log_debug_messages = true                  	# Write Vulkan VK_EXT_debug_utils messages to the Xenia log, as opposed to the OS debug output.
+vulkan_debug_utils_messenger = false              	# Enable writing Vulkan debug messages via VK_EXT_debug_utils to the Xenia log.
+vulkan_debug_utils_messenger_severity = 2         	# Maximum severity of messages to log via the Vulkan debug messenger: 0 - error, 1 - warning, 2 - info, 3 - verbose.
+vulkan_debug_utils_names = false                  	# Enable naming Vulkan objects via VK_EXT_debug_utils.
+vulkan_device = -1                                	# Index of the physical device to use, or -1 for any compatible device.
 vulkan_sparse_shared_memory = true                	# Enable sparse binding for shared memory emulation. Disabling it increases video memory usage - a 512 MB buffer is created - but allows graphics debuggers that don't support sparse binding to work.
-vulkan_validation = false                         	# Enable the Vulkan validation layer (VK_LAYER_KHRONOS_validation). Messages will be written to the Xenia log if 'vulkan_log_debug_messages' is enabled, or to the OS debug output otherwise.
+vulkan_validation = false                         	# Enable Vulkan validation (VK_LAYER_KHRONOS_validation). Messages will be written to the OS debug log without vulkan_debug_messenger or to the Xenia log with it.
 
 
 [Win32]
